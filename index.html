@@ -73,20 +73,26 @@
         const CLIENT_ID = '947318046138-87giqghc7u7hvr1g33a44503hel11evm.apps.googleusercontent.com'; // Your Google Client ID
 
         function handleClientLoad() {
+            console.log('Loading Google Client Library');
             gapi.load('client:auth2', initClient);
         }
 
         async function initClient() {
-            await gapi.client.init({
-                clientId: CLIENT_ID,
-                scope: 'email'
-            });
-            GoogleAuth = gapi.auth2.getAuthInstance();
-            updateSigninStatus(GoogleAuth.isSignedIn.get());
-            GoogleAuth.isSignedIn.listen(updateSigninStatus);
+            try {
+                await gapi.client.init({
+                    clientId: CLIENT_ID,
+                    scope: 'email'
+                });
+                GoogleAuth = gapi.auth2.getAuthInstance();
+                updateSigninStatus(GoogleAuth.isSignedIn.get());
+                GoogleAuth.isSignedIn.listen(updateSigninStatus);
+            } catch (error) {
+                console.error('Error initializing Google API:', error);
+            }
         }
 
         function updateSigninStatus(isSignedIn) {
+            console.log('Sign-in status:', isSignedIn);
             const userInfo = document.getElementById('user-info');
             const loginButton = document.getElementById('login-button');
             const feedbackForm = document.getElementById('feedback-form');
@@ -104,7 +110,10 @@
         }
 
         document.getElementById('login-button').onclick = function() {
-            GoogleAuth.signIn();
+            console.log('Sign-in button clicked');
+            GoogleAuth.signIn().catch(error => {
+                console.error('Sign-in error:', error);
+            });
         };
 
         document.getElementById('feedback-form').onsubmit = function(event) {
