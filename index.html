@@ -423,48 +423,45 @@ I am eager to pursue Bachelor of Science in Information Technology (BSIT) with t
 
                    </div>
           </div>
+          <!--contact section-->
+          <!-- Google Sign-In Button -->
+<div class="g-signin2" data-onsuccess="onSignIn"></div>
 
-          <div class="col-lg-7">
-            <form action="forms/contact.php" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
-              <div class="row gy-4">
+<!-- Message Form (hidden by default) -->
+<form id="messageForm" action="https://formspree.io/f/xdknrrpw" method="POST" style="display:none;">
+  <input type="text" name="message" placeholder="Your message">
+  <input type="email" name="_replyto" value="" hidden>
+  <button type="submit">Send Message</button>
+</form>
+<script>
+  function onSignIn(googleUser) {
+    // Get profile information from Google user
+    var profile = googleUser.getBasicProfile();
+    var userEmail = profile.getEmail(); // Get user's email
 
-                <div class="col-md-6">
-                  <label for="name-field" class="pb-2">Your Name</label>
-                  <input type="text" name="name" id="name-field" class="form-control" required="">
-                </div>
+    console.log('ID: ' + profile.getId()); 
+    console.log('Name: ' + profile.getName()); 
+    console.log('Email: ' + profile.getEmail());
 
-                <div class="col-md-6">
-                  <label for="email-field" class="pb-2">Your Email</label>
-                  <input type="email" class="form-control" name="email" id="email-field" required="">
-                </div>
+    // Display the form after login
+    document.getElementById('messageForm').style.display = 'block';
 
-                <div class="col-md-12">
-                  <label for="subject-field" class="pb-2">Subject</label>
-                  <input type="text" class="form-control" name="subject" id="subject-field" required="">
-                </div>
+    // Pre-fill the email field in the form
+    document.querySelector('input[name="_replyto"]').value = userEmail;
+  }
 
-                <div class="col-md-12">
-                  <label for="message-field" class="pb-2">Message</label>
-                  <textarea class="form-control" name="message" rows="10" id="message-field" required=""></textarea>
-                </div>
+  // Handle Google Sign-Out (optional)
+  function signOut() {
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+      console.log('User signed out.');
+      // Optionally hide the form after sign-out
+      document.getElementById('messageForm').style.display = 'none';
+    });
+  }
+</script>
 
-                <div class="col-md-12 text-center">
-                  <div class="loading">Loading</div>
-                  <div class="error-message"></div>
-                  <div class="sent-message">Your message has been sent. Thank you!</div>
-
-                  <button type="submit">Send Message</button>
-                </div>
-
-              </div>
-            </form>
-          </div><!-- End Contact Form -->
-
-        </div>
-
-      </div>
-
-    </section><!-- /Contact Section -->
+          <!-- /Contact Section -->
 
   </main>
 
